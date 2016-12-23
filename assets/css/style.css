@@ -15,7 +15,8 @@ h1, #timer {
 }
 
 img {
-	width: 100%;
+	width: 50%;
+    margin-bottom: 10px;
 }
 
 h3 {
