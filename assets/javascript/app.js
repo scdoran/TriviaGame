@@ -1,22 +1,52 @@
+// This function will run the game when the page is ready.
+$(document).ready(function() {
+
+// This is the variable set for the timer interval.
+var interval;
+
 // Variables for the game have been set in this object. 
 // Timer, correct, blank & wrong answers, answer values,
 // and the boolean variables set to determine when content on the page shows up. 
+
 var game = {
-	timer: 30,
+	time: 30,
 	correct: 0,
 	wrong: 0,
 	blank: 0,
 	value: " ",
 
+	start: function() {
+    interval = setInterval(game.counter, 1000);
+    //  Use setInterval to start the count.
+	},
+ 	
+ 	stop: function() {
+    clearInterval(interval);
+    //  Use clearInterval to stop the count.
+		$("#trivia").hide();
+		$("#results").show();
+
+		if (game.correct >= 6) {
+			$("#userEnd").append("<h1> You're A Twin Peaks Expert! <h1>");
+			$("#picture").append("<img src='assets/images/littleman.gif'>");
+		} else {
+			$("#userEnd").append("<h1> You Need to Watch Twin Peaks! <h1>");
+			$("#picture").append("<img src='assets/images/bob.gif'>");
+		}
+	},
+
 	counter: function() {
-	game.timer--;
-	$("#timer").html(game.timer);
+	game.time--;
+	var timeLeft = parseInt(game.time);
+	// If the game timer reaches 0, the trivia content will hide and the results page will appear.
+		if (timeLeft === 0) {
+			game.stop();
+			$("#timeUp").append("<h1> Time's Up! <h1>");
+		}
+	$("#timer").html(timeLeft);
 	}
 
 }
-
-// This function will run the game when the page is ready.
-$(document).ready(function() {
 
 // This will make the results "page" hide when the page is loaded.
 	$("#results").hide();
@@ -48,35 +78,11 @@ $(document).ready(function() {
 
 	//The trivia content will show. 
 		$("#trivia").show();
+
+		game.start();
 	
-	//The timer will begin counting backwards. 
-		var interval = setInterval(game.counter, 1000); 
-
-	// If the game timer reaches 0, the trivia content will hide and the results page will appear.
-		if (game.timer === 0) {
-			endGame();
-			$("#timeUp").attr("<h1>", "Time's Up!");
-			$("#timeUp").append("<h1>");
-		}
-
 		$("#submit").click(function endGame() {
-			$("#trivia").hide();
-			$("#results").show();
-			userEnd();
-
-			if (game.correct >= 6) {
-				$("#userEnd").attr("<h1>", "You Know Twin Peaks Well!");
-				$("#userEnd").append("<h1>");
-
-				$("#picture").attr("<img>", "src='assets/images/littleman.gif'");
-				$("#picture").append("<img>");
-			} else {
-				$("#userEnd").attr("<h1>", "Looks Like You Need to Watch Twin Peaks!");
-				$("#userEnd").append("<h1>");
-
-				$("#picture").attr("<img>", "src='assets/images/bob.gif'");
-				$("#picture").append("<img>");
-			}
+			game.stop();
 		});
 	});
 
@@ -90,7 +96,6 @@ $(document).ready(function() {
 		game.wrong = 0;
 		game.blank = 0;
 		game.value = " ";
-		newGame();
 
 	});
 
