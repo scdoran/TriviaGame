@@ -71,27 +71,25 @@ var game = {
 
 		game.start();
 		
-	// This function will determine if the answer selected is correct or incorrect.
-		$("input:radio").click(function (){	
-			if ($(this[value=correct])) {
-				game.correct++;
-				console.log("right!");
-				$("#corrrect").text(game.correct);
-
-			} else if ($(this[value=wrong])) {
-				game.wrong++;
-				console.log("wrong!");
-				$("#wrong").text(game.wrong);
-
-			} else if ($(this).attr("checked", false)){
-				game.blank++;
-				$("#blank").text(game.blank);
-			}
-		});
 	});
 	
 	$("#submit").click(function endGame() {
-		game.stop();	
+
+		game.stop();
+		
+		// This function will determine if the answers selected are correct or incorrect.
+		// $("input:radio").click(function (){	
+			if ($("input:radio[class='correct']").is(":checked")) {
+				game.correct++;
+				$("#correct").text(game.correct);
+			} else if ($("input:radio[class='wrong']").is(":checked")) {
+				game.wrong++;
+				$("#wrong").text(game.wrong);
+			} else if($("input:radio").is(':checked') === false ) {
+				game.blank++;
+				$("#blank").text(game.blank);
+			}
+		// });
 	});
 
 // This function will restart the game when someone clicks on the restart button.
@@ -105,6 +103,7 @@ var game = {
 
 		$("#userEnd").empty();
 		$("#picture").empty();
+		$("#timeUp").empty();
 
 		// Sets the scores for correct, incorrect and blank answers to 0.
 		game.correct = 0;
