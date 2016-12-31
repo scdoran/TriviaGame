@@ -29,13 +29,15 @@ var game = {
 		$("#results").show();
 
 // If the user has 6 or more questions right the game will post that they are an expert.
-// If the user scores less than 6, the game will post that the user needs to watch more Twin Peaks.
 		if (game.correct >= 6) {
 			$("#userEnd").append("<h1> You're A Twin Peaks Expert! <h1>");
 			$("#picture").append("<img src='assets/images/littleman.gif'>");
+			console.log("Good You got " + game.correct + " right!");
+// If the user scores less than 6, the game will post that the user needs to watch more Twin Peaks.
 		} else {
 			$("#userEnd").append("<h1> You Need to Watch Twin Peaks! <h1>");
 			$("#picture").append("<img src='assets/images/bob.gif'>");
+			console.log("Womp womp! You only got " + game.correct + " right.");
 		}
 	},
 
@@ -46,14 +48,35 @@ var game = {
 
 	// If the game timer reaches 0, the trivia content will hide and the results page will appear.
 		if (timeLeft === 0) {
+			game.userAnswer();
 			game.stop();
 			$("#timeUp").append("<h1> Time's Up! <h1>");
 		}
 	// This displays the amount of time left on the page.  
 	$("#timer").html(timeLeft);
+	},
+
+// This function will determine if the answers selected are correct or incorrect.	
+	userAnswer: function () {
+		$('input[type="radio"]:checked').each(function() {
+		    if (this.value === "correct") {
+				game.correct++;
+				$("#correct").text(game.correct);
+		    } else if (this.value === "wrong") {
+		   		game.wrong++;
+				$("#wrong").text(game.wrong);
+			// If the answers were left blank...
+		    } 
+		  //   else if (this.name == false) {
+				// game.blank++;
+				// $("#blank").text(game.blank);
+		  //   }
+		});
 	}
 
 }
+
+// Here's the beginning of the trivia logic.
 
 // This will make the results "page" hide when the page is loaded.
 	$("#results").hide();
@@ -73,23 +96,12 @@ var game = {
 		
 	});
 	
+	 // When someone clicks the submit button, then the game will end.
 	$("#submit").click(function endGame() {
+		game.userAnswer();
 
 		game.stop();
-		
-		// This function will determine if the answers selected are correct or incorrect.
-		// $("input:radio").click(function (){	
-			if ($("input:radio[class='correct']").is(":checked")) {
-				game.correct++;
-				$("#correct").text(game.correct);
-			} else if ($("input:radio[class='wrong']").is(":checked")) {
-				game.wrong++;
-				$("#wrong").text(game.wrong);
-			} else if($("input:radio").is(':checked') === false ) {
-				game.blank++;
-				$("#blank").text(game.blank);
-			}
-		// });
+
 	});
 
 // This function will restart the game when someone clicks on the restart button.
@@ -101,8 +113,13 @@ var game = {
 		// Shows the starting page so the user can restart the game.
 		$("#startGame").show();
 
+		// This will empty the text content that was revealed when the game is over..
 		$("#userEnd").empty();
+
+		// This will empty the picture content that was revealed when the game is over..
 		$("#picture").empty();
+
+		// This will empty the 'Time's Up!' content that was revealed when the game ended due to time constraints..
 		$("#timeUp").empty();
 
 		// Sets the scores for correct, incorrect and blank answers to 0.
@@ -112,6 +129,13 @@ var game = {
 
 		// Sets the game timer to 30 seconds.
 		game.time = 30;
+
+		$("#correct").text(game.correct);
+
+		$("#wrong").text(game.wrong);
+
+		$("#blank").text(game.blank);
+
 
 		// Resets the game values from the form back to being unselected.
 		$('input[type=radio]').attr("checked", false);
