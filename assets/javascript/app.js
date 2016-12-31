@@ -9,7 +9,7 @@ var interval;
 // and the boolean variables set to determine when content on the page shows up. 
 
 var game = {
-	time: 30,
+	time: 60,
 	correct: 0,
 	wrong: 0,
 	blank: 0,
@@ -37,7 +37,7 @@ var game = {
 		} else {
 			$("#userEnd").append("<h1> You Need to Watch Twin Peaks! <h1>");
 			$("#picture").append("<img src='assets/images/bob.gif'>");
-			console.log("Womp womp! You only got " + game.correct + " right.");
+			console.log("Womp womp! You got " + game.correct + " right.");
 		}
 	},
 
@@ -128,7 +128,7 @@ var game = {
 		game.blank = 0;
 
 		// Sets the game timer to 30 seconds.
-		game.time = 30;
+		game.time = 60;
 
 		$("#correct").text(game.correct);
 
