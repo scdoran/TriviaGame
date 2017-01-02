@@ -32,12 +32,12 @@ var game = {
 		if (game.correct >= 6) {
 			$("#userEnd").append("<h1> You're A Twin Peaks Expert! <h1>");
 			$("#picture").append("<img src='assets/images/littleman.gif'>");
-			console.log("Good You got " + game.correct + " right!");
+			console.log("Good You got " + game.correct + " right and left " + game.blank + " blank.");
 // If the user scores less than 6, the game will post that the user needs to watch more Twin Peaks.
 		} else {
 			$("#userEnd").append("<h1> You Need to Watch Twin Peaks! <h1>");
 			$("#picture").append("<img src='assets/images/bob.gif'>");
-			console.log("Womp womp! You got " + game.correct + " right.");
+			console.log("Womp womp! You got " + game.correct + " right and left " + game.blank + " blank.");
 		}
 	},
 
@@ -58,22 +58,33 @@ var game = {
 
 // This function will determine if the answers selected are correct or incorrect.	
 	userAnswer: function () {
+
 		$('input[type="radio"]:checked').each(function() {
+
 		    if (this.value === "correct") {
 				game.correct++;
 				$("#correct").text(game.correct);
 		    } else if (this.value === "wrong") {
 		   		game.wrong++;
 				$("#wrong").text(game.wrong);
-			// If the answers were left blank...
-		    } 
-		  //   else if (this.name == false) {
-				// game.blank++;
-				// $("#blank").text(game.blank);
-		  //   }
-		});
-	}
+			}
 
+// If the answers were left blank...
+			var validate = true;
+
+// Loop through available sets
+    	$('.answers').each(function () {
+
+	        // Validate
+	        if (!$(this).find('input').is(':checked')) {
+	            game.blank++;
+			    $("#blank").text(game.blank);
+        	}  
+        });
+
+		});
+
+	}
 }
 
 // Here's the beginning of the trivia logic.
