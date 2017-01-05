@@ -9,17 +9,16 @@ var interval;
 // and the boolean variables set to determine when content on the page shows up. 
 
 var game = {
-	time: 30,
+	time: 60,
 	correct: 0,
 	wrong: 0,
 	blank: 0,
-	questions: 8,
 
 // This function starts the timer for the game.
 	start: function() {
     
-	    //  Use interval to start the count.
-	    interval = setInterval(game.counter, 1000);
+    //  Use interval to start the count.
+    interval = setInterval(game.counter, 1000);
 	},
  	
 // This function makes the trivia content hide and the results content show.
@@ -28,42 +27,17 @@ var game = {
     //  Use clearInterval to stop the count.
 		$("#trivia").hide();
 		$("#results").show();
-		// game.questions--;
-
-		// if (game.questions === 0) {
-		// 	game.end();
-		// }
-
-// If the user has 6 or more questions right the game will post that they are an expert.
-// 		if (game.correct >= 6) {
-// 			$("#userEnd").append("<h1> You're A Twin Peaks Expert! <h1>");
-// 			$("#picture").append("<img src='assets/images/littleman.gif'>");
-// 			// console.log("Good You got " + game.correct + " right and left " + game.blank + " blank.");
-// // If the user scores less than 6, the game will post that the user needs to watch more Twin Peaks.
-// 		} else {
-// 			$("#userEnd").append("<h1> You Need to Watch Twin Peaks! <h1>");
-// 			$("#picture").append("<img src='assets/images/bob.gif'>");
-// 			// console.log("Womp womp! You got " + game.correct + " right and left " + game.blank + " blank.");
-// 		}
-	},
-
-// This function makes the trivia content hide and the funal result content show.
- 	end: function() {
-    clearInterval(interval);
-    //  Use clearInterval to stop the count.
-		$("#trivia").hide();
-		$("#end").show();
 
 // If the user has 6 or more questions right the game will post that they are an expert.
 		if (game.correct >= 6) {
 			$("#userEnd").append("<h1> You're A Twin Peaks Expert! <h1>");
 			$("#picture").append("<img src='assets/images/littleman.gif'>");
-			// console.log("Good You got " + game.correct + " right and left " + game.blank + " blank.");
+			console.log("Good You got " + game.correct + " right and left " + game.blank + " blank.");
 // If the user scores less than 6, the game will post that the user needs to watch more Twin Peaks.
 		} else {
 			$("#userEnd").append("<h1> You Need to Watch Twin Peaks! <h1>");
 			$("#picture").append("<img src='assets/images/bob.gif'>");
-			// console.log("Womp womp! You got " + game.correct + " right and left " + game.blank + " blank.");
+			console.log("Womp womp! You got " + game.correct + " right and left " + game.blank + " blank.");
 		}
 	},
 
@@ -76,7 +50,6 @@ var game = {
 		if (timeLeft === 0) {
 			game.userAnswer();
 			game.stop();
-			game.blank++;
 			$("#timeUp").append("<h1> Time's Up! <h1>");
 		}
 	// This displays the amount of time left on the page.  
@@ -84,60 +57,32 @@ var game = {
 	},
 
 // This function will determine if the answers selected are correct or incorrect.	
-	userAnswer: function() {
+	userAnswer: function () {
 
 		$('input[type="radio"]:checked').each(function() {
 
 		    if (this.value === "correct") {
 				game.correct++;
 				$("#correct").text(game.correct);
-				$("#userEnd").append("<h1> That's Right! <h1>");
-				game.stop();
-				// $("#picture").append("<img src='assets/images/littleman.gif'>");
 		    } else if (this.value === "wrong") {
 		   		game.wrong++;
 				$("#wrong").text(game.wrong);
-				$("#userEnd").append("<h1> Wrong! <h1>");
-				game.stop();
-				// $("#picture").append("<img src='assets/images/littleman.gif'>");
 			}
 
 // If the answers were left blank...
-			// var validate = true;
+			var validate = true;
 
 // Loop through available sets
-    	// $('.answers').each(function () {
+    	$('.answers').each(function () {
 
-	    //     // Validate
-	    //     if (!$(this).find('input').is(':checked')) {
-	    //         game.blank++;
-			  //   $("#blank").text(game.blank);
-     //    	}  
-     //    });
+	        // Validate
+	        if (!$(this).find('input').is(':checked')) {
+	            game.blank++;
+			    $("#blank").text(game.blank);
+        	}  
+        });
 
 		});
-
-	},
-
-	// This function will restart the game when someone clicks on the restart button.
-	newQuestion: function() {
-		// Hides the trivia content.
-		$("#trivia").show();
-		
-		// Hides the results content.
-		$("#results").hide();
-
-		// This will empty the text content that was revealed when the game is over..
-		$("#userEnd").empty();
-
-		// This will empty the picture content that was revealed when the game is over..
-		$("#picture").empty();
-
-		// This will empty the 'Time's Up!' content that was revealed when the game ended due to time constraints..
-		$("#timeUp").empty();
-
-		// Sets the game timer to 30 seconds.
-		game.time = 30;
 
 	}
 }
@@ -162,8 +107,8 @@ var game = {
 		
 	});
 	
-	 // When someone clicks the submit button, then the game will go to the next question.
-	$('input[type="radio"]').click(function nextQuestion() {
+	 // When someone clicks the submit button, then the game will end.
+	$("#submit").click(function endGame() {
 		game.userAnswer();
 
 		game.stop();
@@ -194,7 +139,7 @@ var game = {
 		game.blank = 0;
 
 		// Sets the game timer to 30 seconds.
-		game.time = 30;
+		game.time = 60;
 
 		$("#correct").text(game.correct);
 
@@ -204,7 +149,7 @@ var game = {
 
 
 		// Resets the game values from the form back to being unselected.
-		// $('input[type=radio]').attr("checked", false);
+		$('input[type=radio]').attr("checked", false);
 	});
 });
 
