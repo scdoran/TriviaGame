@@ -12,8 +12,7 @@ var game = {
 	time: 60,
 	correct: 0,
 	wrong: 0,
-	blank: 0,
-	answered: false,
+	unanswered: [],
 
 // This function starts the timer for the game.
 	start: function() {
@@ -33,12 +32,10 @@ var game = {
 		if (game.correct >= 6) {
 			$("#userEnd").append("<h1> You're A Twin Peaks Expert! <h1>");
 			$("#picture").append("<img src='assets/images/littleman.gif'>");
-			console.log("Good You got " + game.correct + " right and left " + game.blank + " blank.");
 // If the user scores less than 6, the game will post that the user needs to watch more Twin Peaks.
 		} else {
 			$("#userEnd").append("<h1> You Need to Watch Twin Peaks! <h1>");
 			$("#picture").append("<img src='assets/images/bob.gif'>");
-			console.log("Womp womp! You got " + game.correct + " right and left " + game.blank + " blank.");
 		}
 	},
 
@@ -63,11 +60,9 @@ var game = {
 		$('input[type="radio"]:checked').each(function() {
 
 		    if (this.value === "correct") {
-		  		game.answered = true;
 				game.correct++;
 				$("#correct").text(game.correct);
 		    } else if (this.value === "wrong") {
-		   		game.answered = true;
 		   		game.wrong++;
 				$("#wrong").text(game.wrong);
 			}
@@ -76,16 +71,14 @@ var game = {
 
 		// Loop through available sets
 	    	$(".answers").each(function(){
+				
+				var question = $(this).prev().text();         
 
-	    		// var inputName = $("input[name]")
-		        // Validate
-		        if (!$(this).is(':checked')) {
-		            game.blank++;
-				    $("#blank").text(game.blank);
-				} else {
-					console.log('Checked!')
-					game.blank--;
-				}
+		        // Validate if answers were checked.
+		        if (!$(this).find("input").is(':checked')) {
+		            game.unanswered.push(question);
+				    $("#blank").text(game.unanswered.length);
+				} 
 			});
 
 	}
@@ -140,7 +133,7 @@ var game = {
 		// Sets the scores for correct, incorrect and blank answers to 0.
 		game.correct = 0;
 		game.wrong = 0;
-		game.blank = 0;
+		game.unanswered = [];
 
 		// Sets the game timer to 60 seconds.
 		game.time = 60;
@@ -149,7 +142,7 @@ var game = {
 
 		$("#wrong").text(game.wrong);
 
-		$("#blank").text(game.blank);
+		$("#blank").text(game.unanswered.length);
 
 
 		// Resets the game values from the form back to being unselected.
