@@ -13,6 +13,7 @@ var game = {
 	correct: 0,
 	wrong: 0,
 	blank: 0,
+	answered: false,
 
 // This function starts the timer for the game.
 	start: function() {
@@ -41,7 +42,7 @@ var game = {
 		}
 	},
 
-// This function is setting the timer and making the timer count backwards from 30.
+// This function is setting the timer and making the timer count backwards from 60.
 	counter: function() {
 	game.time--;
 	var timeLeft = parseInt(game.time);
@@ -62,27 +63,30 @@ var game = {
 		$('input[type="radio"]:checked').each(function() {
 
 		    if (this.value === "correct") {
+		  		game.answered = true;
 				game.correct++;
 				$("#correct").text(game.correct);
 		    } else if (this.value === "wrong") {
+		   		game.answered = true;
 		   		game.wrong++;
 				$("#wrong").text(game.wrong);
 			}
-
-// If the answers were left blank...
-			var validate = true;
-
-// Loop through available sets
-    	$('.answers').each(function () {
-
-	        // Validate
-	        if (!$(this).find('input').is(':checked')) {
-	            game.blank++;
-			    $("#blank").text(game.blank);
-        	}  
-        });
-
+	        	  
 		});
+
+		// Loop through available sets
+	    	$(".answers").each(function(){
+
+	    		// var inputName = $("input[name]")
+		        // Validate
+		        if (!$(this).is(':checked')) {
+		            game.blank++;
+				    $("#blank").text(game.blank);
+				} else {
+					console.log('Checked!')
+					game.blank--;
+				}
+			});
 
 	}
 }
@@ -138,7 +142,7 @@ var game = {
 		game.wrong = 0;
 		game.blank = 0;
 
-		// Sets the game timer to 30 seconds.
+		// Sets the game timer to 60 seconds.
 		game.time = 60;
 
 		$("#correct").text(game.correct);
